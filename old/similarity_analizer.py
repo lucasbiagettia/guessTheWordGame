@@ -1,4 +1,4 @@
-from model import ModelSingleton
+from old.model import ModelSingleton
 import torch.nn.functional as F
 
 def word_similarity(word1, word2):

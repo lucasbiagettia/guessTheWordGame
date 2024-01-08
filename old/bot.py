@@ -1,5 +1,5 @@
-from model import ModelSingleton
-from similarity_analizer import word_similarity
+from old.model import ModelSingleton
+from old.similarity_analizer import word_similarity
 import telebot
 
 BOT_TOKEN = 'TOKEN'

@@ -1,23 +1,29 @@
 from sklearn.metrics.pairwise import cosine_similarity
 from model_manager import Embedder
+from datetime import date
+import word_getter
+
+# Obtener la fecha actual
 
 # Cargar el modelo SentenceTransformer
 model = Embedder()
+DAY_WORD = None
+DAY = None
+DAY_EMBEDDING = None
 
-# Oraciones de ejemplo
-sentence1 = 'gato'
-sentence2 = 'Hola, ¿cómo te llamas?'
+def get_score(text):
+    user_embedding = model.encode_sentences([text])
+    similarity_score = cosine_similarity(get_day_emedding(), user_embedding)[0][0]
+    return int((similarity_score*10000))
 
-# Generar embeddings para las oraciones
-embedding1 = model.encode_sentences([sentence1.lower()])
-embedding2 = model.encode_sentences([sentence2])
-input_u=""
-while input_u != 'fin':
-    input_u = input("inp")
-    embedding2 = model.encode_sentences([input_u.lower()])
 
-# Calcular la similitud coseno entre los embeddings
-    similarity_score = cosine_similarity(embedding1, embedding2)[0][0]
 
-    # Imprimir el resultado
-    print(f"Similitud coseno entre las oraciones: {similarity_score}")
+def get_day_emedding():
+    global DAY, DAY_WORD, DAY_EMBEDDING
+    if DAY  == None or DAY != date.today():
+        DAY = date.today()
+        DAY_WORD = word_getter.get_word(DAY).lower()
+        DAY_EMBEDDING = model.encode_sentences([DAY_WORD])
+        
+    return DAY_EMBEDDING    
+
