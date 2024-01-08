@@ -1,15 +1,24 @@
 import streamlit as st
 import cosine_comparator
-from get_styles import get_color_by_value, get_style
+from styles.styles import get_color_by_value, get_style, get_winner_style
 
 
 def handle_chat_input(prompt):
-    #with st.chat_message("user"):
-    score = (prompt, cosine_comparator.get_score(prompt))
-    st.session_state.scores.append(score)
-    st.session_state.scores.sort(key=lambda x: x[1], reverse=True)
+    points = cosine_comparator.get_score(prompt)
+    if(points == 10000):
+        print_winner(prompt)
+    else:
+        score = (prompt, points)
+        st.session_state.scores.append(score)
+        st.session_state.scores.sort(key=lambda x: x[1], reverse=True)
     print_all_messages(st.session_state.scores)
 
+def print_winner(text):
+    estilo_css = get_winner_style()
+
+    st.markdown(estilo_css, unsafe_allow_html=True)
+    st.markdown(f'<div class="my-box">{text.upper()}</div>'
+                '</div>', unsafe_allow_html=True)
 
 def print_all_messages(pares):
     estilo_css = get_style()
@@ -30,7 +39,7 @@ def main():
 
 
 
-    st.header("Adivina")
+    st.header("Adivina la palabra")
 
     
     if "scores" not in st.session_state:
@@ -56,7 +65,7 @@ def main():
   
 
 
-    prompt = st.chat_input("Ayúdame a continuar escribiendo")
+    prompt = st.chat_input("Escribe una palabra")
     if prompt:
         handle_chat_input(prompt)
 

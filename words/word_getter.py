@@ -1,7 +1,7 @@
 from datetime import date
 
 
-file_name = "word_list"
+file_name = "words/word_list"
 def get_word(date):
     current_date_str = date.strftime("%Y-%m-%d")
     with open(file_name, "r") as file:
